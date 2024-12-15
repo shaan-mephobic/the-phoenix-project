@@ -5,7 +5,7 @@ import 'package:phoenix/src/beginning/utilities/constants.dart';
 import 'package:phoenix/src/beginning/utilities/global_variables.dart';
 
 class Awakening extends StatelessWidget {
-  const Awakening({Key? key}) : super(key: key);
+  const Awakening({super.key});
 
   @override
   Widget build(BuildContext context) {

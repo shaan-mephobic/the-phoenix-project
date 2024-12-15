@@ -38,6 +38,18 @@ goSensitivity(value) async {
   }
 }
 
+replaceFile(ogFile, editedFile) async {
+  try {
+    var data = <String, String>{
+      "originalFilePath": ogFile,
+      "editedFilePath": editedFile,
+    };
+    await platform.invokeMethod("replaceFile", data);
+  } catch (e) {
+    throw Exception(e);
+  }
+}
+
 checkWallpaperSupport() async {
   try {
     await platform.invokeMethod("wallpaperSupport?");
@@ -62,10 +74,10 @@ returnToOld() async {
   }
 }
 
-deleteAFile(path) async {
+deleteFileUsingPath(path) async {
   try {
-    var data = <String, String>{"fileToDelete": path};
-    await platform.invokeMethod("deleteFile", data);
+    var data = <String, String>{"path": path};
+    await platform.invokeMethod("deleteFileUsingPath", data);
   } catch (e) {
     throw Exception(e);
   }

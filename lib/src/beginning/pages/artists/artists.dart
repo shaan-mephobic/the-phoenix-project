@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'artists_inside.dart';
 
 class Artists extends StatefulWidget {
-  const Artists({Key? key}) : super(key: key);
+  const Artists({super.key});
 
   @override
   State<Artists> createState() => _ArtistsState();

@@ -3,13 +3,16 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_remixicon/flutter_remixicon.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:phoenix/src/beginning/utilities/audio_handlers/equalizer.dart';
 import 'package:phoenix/src/beginning/utilities/audio_handlers/previous_play_skip.dart';
 import 'package:phoenix/src/beginning/utilities/constants.dart';
 import 'package:phoenix/src/beginning/utilities/global_variables.dart';
 import 'package:phoenix/src/beginning/utilities/provider/provider.dart';
+import 'package:phoenix/src/beginning/widgets/custom/focus_lyrics.dart';
 import 'package:phoenix/src/beginning/widgets/custom/graviticons.dart';
 import 'package:phoenix/src/beginning/widgets/custom/marquee.dart';
 import 'package:phoenix/src/beginning/widgets/dialogues/on_hold.dart';
@@ -19,7 +22,7 @@ import 'package:phoenix/src/beginning/widgets/seek_bar.dart';
 import 'package:provider/provider.dart';
 
 class NowPlayingSky extends StatefulWidget {
-  const NowPlayingSky({Key? key}) : super(key: key);
+  const NowPlayingSky({super.key});
 
   @override
   State<NowPlayingSky> createState() => _NowPlayingSkyState();
@@ -135,6 +138,18 @@ class _NowPlayingSkyState extends State<NowPlayingSky>
                         child: InkWell(
                           enableFeedback: false,
                           onTap: () {
+                            if (!onLyrics) {
+                              HapticFeedback.lightImpact();
+                              setState(() {
+                                onLyrics = !onLyrics;
+                              });
+                              if (onLyrics) lyricsFoo();
+                            }
+                            // print(lyricsDat);
+                            // print("What the cuk");
+                            // print("YOOOOOOOOOOOOO${lyricsDat!.isValidLrc}");
+                          },
+                          onDoubleTap: () {
                             HapticFeedback.lightImpact();
                             setState(() {
                               onLyrics = !onLyrics;
@@ -197,29 +212,44 @@ class _NowPlayingSkyState extends State<NowPlayingSky>
                                             Colors.transparent
                                           ]).createShader(Rect.fromLTRB(0, 0,
                                               bounds.width, bounds.height)),
-                                      child: SingleChildScrollView(
-                                        controller: lyricscrollController,
-                                        padding: EdgeInsets.only(
-                                            bottom: deviceHeight! / 18,
-                                            top: deviceHeight! / 18),
-                                        physics: const BouncingScrollPhysics(),
-                                        child: Text(
-                                          lyricsDat ?? "",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            wordSpacing: 2,
-                                            fontSize: deviceWidth! / 18,
-                                            fontWeight: FontWeight.w600,
-                                            color:
-                                                musicBox.get("dynamicArtDB") ??
-                                                        true
-                                                    ? isArtworkDark!
-                                                        ? Colors.white
-                                                        : Colors.black
-                                                    : Colors.white,
-                                          ),
-                                        ),
-                                      ),
+
+                                      //TODO unfucker
+
+                                      child: lyricsDat!.contains("[00:")
+                                          ? FocusedTextWidget.fromString(
+                                              text: lyricsDat!,
+                                              // showSeparator: true,
+                                              resizeFactor: 0.5,
+                                              maxParagraphLines: 3,
+
+                                              // autoPlay: true,
+                                              // autoPlayDuration:
+                                              //     const Duration(seconds: 3),
+                                            )
+                                          : SingleChildScrollView(
+                                              controller: lyricscrollController,
+                                              padding: EdgeInsets.only(
+                                                  bottom: deviceHeight! / 18,
+                                                  top: deviceHeight! / 18),
+                                              physics:
+                                                  const BouncingScrollPhysics(),
+                                              child: Text(
+                                                lyricsDat ?? "",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  wordSpacing: 2,
+                                                  fontSize: deviceWidth! / 18,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: musicBox.get(
+                                                              "dynamicArtDB") ??
+                                                          true
+                                                      ? isArtworkDark!
+                                                          ? Colors.white
+                                                          : Colors.black
+                                                      : Colors.white,
+                                                ),
+                                              ),
+                                            ),
                                     ),
                                   ),
                                 ],
@@ -352,6 +382,8 @@ class _NowPlayingSkyState extends State<NowPlayingSky>
                                       color: nowColor.withOpacity(0.3),
                                       child: Center(
                                         child: IconButton(
+                                            splashColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
                                             padding: EdgeInsets.zero,
                                             icon: AnimatedIcon(
                                               progress: animatedPlayPause,
@@ -424,25 +456,43 @@ class _NowPlayingSkyState extends State<NowPlayingSky>
                             color: Colors.transparent,
                             child: InkWell(
                               borderRadius: BorderRadius.circular(kRounded),
-                              onTap: () {
-                                setState(() {
-                                  onLyrics = !onLyrics;
+                              onTap: () async {
+                                // setState(() {
+                                //   onLyrics = !onLyrics;
+                                // });
+                                // if (onLyrics) lyricsFoo();
+                                await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.size,
+                                    alignment: Alignment.center,
+                                    duration: dialogueAnimationDuration,
+                                    reverseDuration: dialogueAnimationDuration,
+                                    child: const EqualizerPage(),
+                                  ),
+                                ).then((value) async {
+                                  setState(() {});
                                 });
-                                if (onLyrics) lyricsFoo();
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => EqualizerPage()));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(17.0),
                                 child: Icon(
-                                  Graviticons.lyricsAwesome,
+                                  MIcon.riDiscLine,
+                                  // Graviticons.lyricsAwesome,
                                   color: musicBox.get("dynamicArtDB") ?? true
-                                      ? onLyrics
+                                      ? equalizer.enabled
                                           ? isArtworkDark!
                                               ? Colors.white
                                               : Colors.black
                                           : isArtworkDark!
                                               ? Colors.white.withOpacity(0.4)
                                               : Colors.black.withOpacity(0.4)
-                                      : onLyrics
+                                      : equalizer.enabled
                                           ? Colors.white
                                           : Colors.white38,
                                   size: deviceWidth! / 15,
@@ -453,27 +503,46 @@ class _NowPlayingSkyState extends State<NowPlayingSky>
                           Visibility(
                             visible: musicBox.get("audiophileData") ?? true,
                             child: Expanded(
-                              child: Text(
-                                  (advanceAudioData == null
-                                      ? ""
-                                      : "${advanceAudioData!.bitrate}Kbps ${advanceAudioData!.sampleRate}KHz ${advanceAudioData!.format}"),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      fontSize: deviceWidth! / 37,
-                                      shadows: const [
-                                        Shadow(
-                                          offset: Offset(0.5, 0.5),
-                                          blurRadius: 1,
-                                          color: Colors.black26,
-                                        ),
-                                      ],
-                                      color:
-                                          musicBox.get("dynamicArtDB") ?? true
-                                              ? isArtworkDark!
-                                                  ? Colors.white
-                                                  : Colors.black
-                                              : Colors.white)),
+                              child: AnimatedSwitcher(
+                                // transitionBuilder: (Widget child,
+                                // Animation<double> animation) {
+                                //   return SlideTransition(
+                                //     position: Tween<Offset>(
+                                //       begin: Offset(0, 5),
+                                //       end: Offset(0, 0.0),
+                                //     ).animate(animation),
+                                //     child: child,
+                                //   );
+                                // },
+                                duration:
+                                    Duration(milliseconds: crossfadeDuration),
+                                child: Text(
+                                    (advanceAudioData == null
+                                        ? ""
+                                        : "${advanceAudioData!.bitrate}Kbps ${advanceAudioData!.sampleRate}KHz ${advanceAudioData!.format}"),
+                                    key: ValueKey<String>(
+                                      (advanceAudioData == null
+                                          ? ""
+                                          : "${advanceAudioData!.bitrate}Kbps ${advanceAudioData!.sampleRate}KHz ${advanceAudioData!.format}"),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontSize: deviceWidth! / 37,
+                                        shadows: const [
+                                          Shadow(
+                                            offset: Offset(0.5, 0.5),
+                                            blurRadius: 1,
+                                            color: Colors.black26,
+                                          ),
+                                        ],
+                                        color:
+                                            musicBox.get("dynamicArtDB") ?? true
+                                                ? isArtworkDark!
+                                                    ? Colors.white
+                                                    : Colors.black
+                                                : Colors.white)),
+                              ),
                             ),
                           ),
                           Material(
@@ -499,6 +568,10 @@ class _NowPlayingSkyState extends State<NowPlayingSky>
                                   stopPhoenixVisualizer();
                                   setState(() {});
                                 }
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => EqualizerPage()));
                               },
                               onLongPress: () async {
                                 await Navigator.push(
@@ -1020,30 +1093,41 @@ class _NowPlayingSkyState extends State<NowPlayingSky>
                                               musicBox.get("audiophileData") ??
                                                   true,
                                           child: Expanded(
-                                            child: Text(
-                                                (advanceAudioData == null
-                                                    ? ""
-                                                    : "${advanceAudioData!.bitrate}Kbps ${advanceAudioData!.sampleRate}KHz ${advanceAudioData!.format}"),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    fontSize: deviceWidth! / 37,
-                                                    shadows: const [
-                                                      Shadow(
-                                                        offset:
-                                                            Offset(0.5, 0.5),
-                                                        blurRadius: 1,
-                                                        color: Colors.black26,
-                                                      ),
-                                                    ],
-                                                    color: musicBox.get(
-                                                                "dynamicArtDB") ??
-                                                            true
-                                                        ? isArtworkDark!
-                                                            ? Colors.white
-                                                            : Colors.black
-                                                        : Colors.white)),
+                                            child: AnimatedSwitcher(
+                                              duration: Duration(
+                                                  milliseconds:
+                                                      crossfadeDuration),
+                                              child: Text(
+                                                  (advanceAudioData == null
+                                                      ? ""
+                                                      : "${advanceAudioData!.bitrate}Kbps ${advanceAudioData!.sampleRate}KHz ${advanceAudioData!.format}"),
+                                                  textAlign: TextAlign.center,
+                                                  key: ValueKey<String>(
+                                                    (advanceAudioData == null
+                                                        ? ""
+                                                        : "${advanceAudioData!.bitrate}Kbps ${advanceAudioData!.sampleRate}KHz ${advanceAudioData!.format}"),
+                                                  ),
+                                                  style: TextStyle(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      fontSize:
+                                                          deviceWidth! / 37,
+                                                      shadows: const [
+                                                        Shadow(
+                                                          offset:
+                                                              Offset(0.5, 0.5),
+                                                          blurRadius: 1,
+                                                          color: Colors.black26,
+                                                        ),
+                                                      ],
+                                                      color: musicBox.get(
+                                                                  "dynamicArtDB") ??
+                                                              true
+                                                          ? isArtworkDark!
+                                                              ? Colors.white
+                                                              : Colors.black
+                                                          : Colors.white)),
+                                            ),
                                           ),
                                         ),
                                         Material(
@@ -1052,30 +1136,35 @@ class _NowPlayingSkyState extends State<NowPlayingSky>
                                             borderRadius:
                                                 BorderRadius.circular(kRounded),
                                             onTap: () async {
-                                              if (phoenixVisualizerShown) {
-                                                await Navigator.push(
+                                              // if (phoenixVisualizerShown) {
+                                              //   await Navigator.push(
+                                              //     context,
+                                              //     PageTransition(
+                                              //       type:
+                                              //           PageTransitionType.size,
+                                              //       alignment: Alignment.center,
+                                              //       duration: const Duration(
+                                              //           milliseconds: 200),
+                                              //       reverseDuration:
+                                              //           const Duration(
+                                              //               milliseconds: 200),
+                                              //       child:
+                                              //           const PhoenixVisualizer(),
+                                              //     ),
+                                              //   ).then((value) async {
+                                              //     if (value) {
+                                              //       setState(() {});
+                                              //     }
+                                              //   });
+                                              // } else {
+                                              //   stopPhoenixVisualizer();
+                                              //   setState(() {});
+                                              // }
+                                              Navigator.push(
                                                   context,
-                                                  PageTransition(
-                                                    type:
-                                                        PageTransitionType.size,
-                                                    alignment: Alignment.center,
-                                                    duration: const Duration(
-                                                        milliseconds: 200),
-                                                    reverseDuration:
-                                                        const Duration(
-                                                            milliseconds: 200),
-                                                    child:
-                                                        const PhoenixVisualizer(),
-                                                  ),
-                                                ).then((value) async {
-                                                  if (value) {
-                                                    setState(() {});
-                                                  }
-                                                });
-                                              } else {
-                                                stopPhoenixVisualizer();
-                                                setState(() {});
-                                              }
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EqualizerPage()));
                                             },
                                             onLongPress: () async {
                                               await Navigator.push(

@@ -20,7 +20,7 @@ Color? dominantAlbum;
 Color? contrastAlbum;
 
 class AlbumsInside extends StatefulWidget {
-  const AlbumsInside({Key? key}) : super(key: key);
+  const AlbumsInside({super.key});
 
   @override
   State<AlbumsInside> createState() => _AlbumsInsideState();

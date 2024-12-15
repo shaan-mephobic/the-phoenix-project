@@ -6,7 +6,7 @@ import 'package:phoenix/src/beginning/utilities/native/go_native.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class PhoenixVisualizer extends StatefulWidget {
-  const PhoenixVisualizer({Key? key}) : super(key: key);
+  const PhoenixVisualizer({super.key});
 
   @override
   State<PhoenixVisualizer> createState() => _PhoenixVisualizerState();
@@ -94,7 +94,9 @@ class _PhoenixVisualizerState extends State<PhoenixVisualizer> {
                                     max: 100,
                                     initialValue: defaultSensitivity,
                                     onChange: (double value) async {
-                                      goSensitivity(35 + (value * 0.3));
+                                      // goSensitivity(35 + (value * 0.3));
+                                      goSensitivity(value);
+
                                       defaultSensitivity = value;
                                     },
                                   ),
@@ -172,7 +174,7 @@ stopPhoenixVisualizer() {
 }
 
 class PhoenixVisualizerCustomize extends StatefulWidget {
-  const PhoenixVisualizerCustomize({Key? key}) : super(key: key);
+  const PhoenixVisualizerCustomize({super.key});
 
   @override
   State<PhoenixVisualizerCustomize> createState() =>
@@ -263,7 +265,9 @@ class _PhoenixVisualizerCustomizeState
                                     max: 100,
                                     initialValue: defaultSensitivity,
                                     onChange: (double value) async {
-                                      goSensitivity(35 + (value * 0.3));
+                                      // goSensitivity(35 + (value * 0.3));
+                                      goSensitivity(value);
+
                                       defaultSensitivity = value;
                                     },
                                   ),
@@ -314,7 +318,7 @@ class _PhoenixVisualizerCustomizeState
 }
 
 class PhoenixVisualizerGlobal extends StatefulWidget {
-  const PhoenixVisualizerGlobal({Key? key}) : super(key: key);
+  const PhoenixVisualizerGlobal({super.key});
 
   @override
   State<PhoenixVisualizerGlobal> createState() =>
@@ -403,7 +407,9 @@ class _PhoenixVisualizerGlobalState extends State<PhoenixVisualizerGlobal> {
                                     max: 100,
                                     initialValue: defaultSensitivity,
                                     onChange: (double value) async {
-                                      goSensitivity(35 + (value * 0.3));
+                                      // goSensitivity(35 + (value * 0.3));
+
+                                      goSensitivity(value);
                                       defaultSensitivity = value;
                                     },
                                   ),

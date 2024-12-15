@@ -21,7 +21,7 @@ import 'package:flutter/material.dart';
 int? artistPassed;
 
 class ArtistsInside extends StatefulWidget {
-  const ArtistsInside({Key? key}) : super(key: key);
+  const ArtistsInside({super.key});
 
   @override
   State<ArtistsInside> createState() => _ArtistsInsideState();

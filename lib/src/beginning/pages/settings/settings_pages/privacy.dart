@@ -8,7 +8,7 @@ import 'package:phoenix/src/beginning/utilities/provider/provider.dart';
 import 'package:provider/provider.dart';
 
 class Privacy extends StatefulWidget {
-  const Privacy({Key? key}) : super(key: key);
+  const Privacy({super.key});
 
   @override
   State<Privacy> createState() => _PrivacyState();

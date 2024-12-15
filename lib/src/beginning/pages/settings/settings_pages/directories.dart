@@ -5,7 +5,7 @@ import 'package:phoenix/src/beginning/utilities/global_variables.dart';
 import '../../../utilities/page_backend/file_exporer.dart';
 
 class Directories extends StatefulWidget {
-  const Directories({Key? key}) : super(key: key);
+  const Directories({super.key});
 
   @override
   State<Directories> createState() => _DirectoriesState();

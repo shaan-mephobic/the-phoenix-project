@@ -20,14 +20,14 @@ class MarqueeText extends StatelessWidget {
   final MarqueeDirection marqueeDirection;
 
   const MarqueeText({
-    Key? key,
+    super.key,
     this.text,
     this.style,
     this.speed = 50,
     this.alwaysScroll = false,
     this.textDirection = TextDirection.ltr,
     this.marqueeDirection = MarqueeDirection.rtl,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class MarqueeContainer extends StatefulWidget {
   final MarqueeDirection? marqueeDirection;
 
   const MarqueeContainer({
-    Key? key,
+    super.key,
     this.text,
     this.textStyle,
     this.constraints,
@@ -68,7 +68,7 @@ class MarqueeContainer extends StatefulWidget {
     this.alwaysScroll,
     this.textDirection,
     this.marqueeDirection,
-  }) : super(key: key);
+  });
   @override
   MarqueeContainerState createState() => MarqueeContainerState();
 }

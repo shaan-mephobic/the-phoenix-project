@@ -7,14 +7,15 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:phoenix/src/beginning/utilities/delete.dart';
 import 'package:phoenix/src/beginning/utilities/global_variables.dart';
 import 'package:phoenix/src/beginning/utilities/heart.dart';
 import 'package:phoenix/src/beginning/utilities/native/go_native.dart';
 import 'package:phoenix/src/beginning/utilities/page_backend/albums_back.dart';
 import 'package:phoenix/src/beginning/pages/ringtone/ringtone.dart';
 import 'package:phoenix/src/beginning/widgets/dialogues/add_to_playlist.dart';
-import 'package:phoenix/src/beginning/widgets/dialogues/r_support.dart';
 import 'package:phoenix/src/beginning/widgets/dialogues/song_edit.dart';
+import 'package:phoenix/src/beginning/widgets/snack.dart';
 import '../../utilities/page_backend/artists_back.dart';
 import 'package:phoenix/src/beginning/pages/genres/genres.dart';
 import 'package:phoenix/src/beginning/pages/genres/genres_inside.dart';
@@ -24,6 +25,7 @@ import 'package:phoenix/src/beginning/utilities/audio_handlers/previous_play_ski
 import 'package:phoenix/src/beginning/utilities/screenshot_ui.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../utilities/constants.dart';
+import 'package:metadata_god/metadata_god.dart' as god;
 
 class OnHold extends StatefulWidget {
   final BuildContext classContext;
@@ -34,15 +36,14 @@ class OnHold extends StatefulWidget {
   final double? widthOfDevice;
   final String songOf;
   const OnHold(
-      {Key? key,
+      {super.key,
       required this.classContext,
       required this.listOfSong,
       required this.index,
       required this.car,
       required this.heightOfDevice,
       required this.widthOfDevice,
-      required this.songOf})
-      : super(key: key);
+      required this.songOf});
 
   @override
   State<OnHold> createState() => _OnHoldState();
@@ -306,57 +307,87 @@ class _OnHoldState extends State<OnHold> {
                                                               1.0),
                                                     ),
                                                   );
-                                                }
-
-                                                /// Edit Song
-                                                else if (i == 5) {
-                                                  Navigator.pop(context);
+                                                } else if (i == 5) {
+                                                  // Edit Song
                                                   try {
-                                                    AudioModel songInfo =
-                                                        await OnAudioEdit()
-                                                            .readAudio(widget
-                                                                .listOfSong![
-                                                                    widget
-                                                                        .index]
-                                                                .data);
-                                                    await Navigator.push(
-                                                      context,
+                                                    late SongEdit songEditPage;
+                                                    if (androidSdkVersion <=
+                                                        29) {
+                                                      // before Scoped Storage on_audio_edit(Lucas)
+                                                      final AudioModel
+                                                          songInfo =
+                                                          await OnAudioEdit()
+                                                              .readAudio(widget
+                                                                  .listOfSong![
+                                                                      widget
+                                                                          .index]
+                                                                  .data);
+                                                      songEditPage = SongEdit(
+                                                        title: songInfo.title,
+                                                        album: songInfo.album ??
+                                                            "",
+                                                        artist:
+                                                            songInfo.artist ??
+                                                                "",
+                                                        genre: songInfo.genre ??
+                                                            "",
+                                                        car: orientedCar,
+                                                        heightOfDevice:
+                                                            deviceHeight,
+                                                        widthOfDevice:
+                                                            deviceWidth,
+                                                        filePath: widget
+                                                            .listOfSong![
+                                                                widget.index]
+                                                            .data,
+                                                        artwork: songInfo
+                                                                .firstArtwork ??
+                                                            defaultNone,
+                                                      );
+                                                    } else {
+                                                      // scoped storage metadata_god
+                                                      god.Metadata metadata =
+                                                          (await god.MetadataGod
+                                                              .readMetadata(
+                                                                  file: widget
+                                                                      .listOfSong![
+                                                                          widget
+                                                                              .index]
+                                                                      .data));
+                                                      songEditPage = SongEdit(
+                                                        title: metadata.title,
+                                                        album: metadata.album,
+                                                        artist: metadata.artist,
+                                                        genre: metadata.genre,
+                                                        car: orientedCar,
+                                                        heightOfDevice:
+                                                            deviceHeight,
+                                                        widthOfDevice:
+                                                            deviceWidth,
+                                                        filePath: widget
+                                                            .listOfSong![
+                                                                widget.index]
+                                                            .data,
+                                                        artwork: metadata
+                                                            .picture?.data,
+                                                      );
+                                                    }
+                                                    Navigator.pop(context);
+                                                    Navigator.of(context).push(
                                                       PageTransition(
-                                                        type: PageTransitionType
-                                                            .size,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        duration:
-                                                            dialogueAnimationDuration,
-                                                        reverseDuration:
-                                                            dialogueAnimationDuration,
-                                                        child: SongEdit(
-                                                          title: songInfo.title,
-                                                          album:
-                                                              songInfo.album ??
-                                                                  "",
-                                                          artist:
-                                                              songInfo.artist ??
-                                                                  "",
-                                                          genre:
-                                                              songInfo.genre ??
-                                                                  "",
-                                                          car: orientedCar,
-                                                          heightOfDevice:
-                                                              deviceHeight,
-                                                          widthOfDevice:
-                                                              deviceWidth,
-                                                          filePath: widget
-                                                              .listOfSong![
-                                                                  widget.index]
-                                                              .data,
-                                                          artwork: songInfo
-                                                                  .firstArtwork ??
-                                                              defaultNone,
-                                                        ),
-                                                      ),
+                                                          type:
+                                                              PageTransitionType
+                                                                  .size,
+                                                          alignment:
+                                                              Alignment.center,
+                                                          duration:
+                                                              dialogueAnimationDuration,
+                                                          reverseDuration:
+                                                              dialogueAnimationDuration,
+                                                          child: songEditPage),
                                                     );
                                                   } catch (e) {
+                                                    debugPrint(e.toString());
                                                     Flushbar(
                                                       message:
                                                           "The File Might be Unsupported/Corrupted.",
@@ -395,22 +426,56 @@ class _OnHoldState extends State<OnHold> {
                                                     ).show(context);
                                                   }
                                                 } else if (i == 6) {
-                                                  if (isAndroid11) {
-                                                    Navigator.pop(context);
-                                                    androidRSupport(context);
-                                                  } else {
-                                                    if (await Permission.storage
-                                                        .request()
-                                                        .isGranted) {
-                                                      await deleteAFile(widget
-                                                          .listOfSong![
-                                                              widget.index]
-                                                          .data);
-                                                      Navigator.pop(context);
-                                                      refresh = true;
-                                                      rootState.provideman();
+                                                  try {
+                                                    if (androidSdkVersion <
+                                                        29) {
+                                                      await deleteFileUsingPath(
+                                                          widget
+                                                              .listOfSong![
+                                                                  widget.index]
+                                                              .data);
+                                                    } else {
+                                                      await deleteFileWithMediaStore(
+                                                          widget
+                                                              .listOfSong![
+                                                                  widget.index]
+                                                              .data);
                                                     }
+                                                    Navigator.pop(context);
+                                                    refresh = true;
+                                                    rootState.provideman();
+                                                  } catch (e) {
+                                                    Navigator.pop(context);
+                                                    debugPrint("$e");
+                                                    Snack().showFlushbar(
+                                                        context: context,
+                                                        message:
+                                                            "Failed to delete file",
+                                                        icon: const Icon(
+                                                          Icons.error_outline,
+                                                          size: 28.0,
+                                                          color:
+                                                              Color(0xFFCB0447),
+                                                        ));
                                                   }
+                                                  // try {
+
+                                                  //   await deleteFileWithMediaStore(
+                                                  //       widget
+                                                  //           .listOfSong![
+                                                  //               widget.index]
+                                                  //           .data);
+                                                  //   // }
+                                                  //   Navigator.pop(context);
+                                                  //   refresh = true;
+                                                  //   rootState.provideman();
+                                                  // } catch (e) {
+                                                  //   Navigator.pop(context);
+                                                  //   refresh = true;
+                                                  //   rootState.provideman();
+                                                  //   //TODO make this as warning
+                                                  //   androidRSupport(context);
+                                                  // }
                                                 }
                                               },
                                               child: Center(
@@ -484,12 +549,12 @@ class OnHoldExtended extends StatefulWidget {
   final double? heightOfDevice;
   final double? widthOfDevice;
   const OnHoldExtended({
-    Key? key,
+    super.key,
     required this.context,
     required this.car,
     required this.heightOfDevice,
     required this.widthOfDevice,
-  }) : super(key: key);
+  });
 
   @override
   State<OnHoldExtended> createState() => _OnHoldExtendedState();
@@ -646,11 +711,11 @@ class _OnHoldExtendedState extends State<OnHoldExtended> {
                                                                   "Futura",
                                                               color: Colors
                                                                   .white)),
-                                                      icon: const Icon(
+                                                      icon: Icon(
                                                         MdiIcons.heart,
                                                         size: 28.0,
-                                                        color:
-                                                            Color(0xFFCB0447),
+                                                        color: const Color(
+                                                            0xFFCB0447),
                                                       ),
                                                       shouldIconPulse: true,
                                                       dismissDirection:
@@ -759,51 +824,78 @@ class _OnHoldExtendedState extends State<OnHoldExtended> {
                                                   await Share.shareFiles(
                                                     [nowMediaItem.id],
                                                   );
-                                                }
-
-                                                /// Edit Song
-                                                else if (i == 4) {
+                                                } else if (i == 4) {
+                                                  // Edit Song
                                                   Navigator.pop(context);
                                                   try {
-                                                    final AudioModel songInfo =
-                                                        await OnAudioEdit()
-                                                            .readAudio(
-                                                                nowMediaItem
-                                                                    .id);
+                                                    late SongEdit songEditPage;
+                                                    if (androidSdkVersion <=
+                                                        29) {
+                                                      // before Scoped Storage on_audio_edit(Lucas)
+                                                      final AudioModel
+                                                          songInfo =
+                                                          await OnAudioEdit()
+                                                              .readAudio(
+                                                                  nowMediaItem
+                                                                      .id);
+                                                      songEditPage = SongEdit(
+                                                        title: songInfo.title,
+                                                        album: songInfo.album ??
+                                                            "",
+                                                        artist:
+                                                            songInfo.artist ??
+                                                                "",
+                                                        genre: songInfo.genre ??
+                                                            "",
+                                                        car: orientedCar,
+                                                        heightOfDevice:
+                                                            deviceHeight,
+                                                        widthOfDevice:
+                                                            deviceWidth,
+                                                        filePath:
+                                                            nowMediaItem.id,
+                                                        artwork: songInfo
+                                                                .firstArtwork ??
+                                                            defaultNone,
+                                                      );
+                                                    } else {
+                                                      // scoped storage metadata_god
+                                                      god.Metadata metadata =
+                                                          (await god.MetadataGod
+                                                              .readMetadata(
+                                                                  file:
+                                                                      nowMediaItem
+                                                                          .id));
+                                                      songEditPage = SongEdit(
+                                                        title: metadata.title,
+                                                        album: metadata.album,
+                                                        artist: metadata.artist,
+                                                        genre: metadata.genre,
+                                                        car: orientedCar,
+                                                        heightOfDevice:
+                                                            deviceHeight,
+                                                        widthOfDevice:
+                                                            deviceWidth,
+                                                        filePath:
+                                                            nowMediaItem.id,
+                                                        artwork: metadata
+                                                            .picture?.data,
+                                                      );
+                                                    }
+
                                                     await Navigator.push(
                                                       context,
                                                       PageTransition(
-                                                        type: PageTransitionType
-                                                            .size,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        duration:
-                                                            dialogueAnimationDuration,
-                                                        reverseDuration:
-                                                            dialogueAnimationDuration,
-                                                        child: SongEdit(
-                                                          title: songInfo.title,
-                                                          album:
-                                                              songInfo.album ??
-                                                                  "",
-                                                          artist:
-                                                              songInfo.artist ??
-                                                                  "",
-                                                          genre:
-                                                              songInfo.genre ??
-                                                                  "",
-                                                          car: orientedCar,
-                                                          heightOfDevice:
-                                                              deviceHeight,
-                                                          widthOfDevice:
-                                                              deviceWidth,
-                                                          filePath:
-                                                              nowMediaItem.id,
-                                                          artwork: songInfo
-                                                                  .firstArtwork ??
-                                                              defaultNone,
-                                                        ),
-                                                      ),
+                                                          type:
+                                                              PageTransitionType
+                                                                  .size,
+                                                          alignment:
+                                                              Alignment.center,
+                                                          duration:
+                                                              dialogueAnimationDuration,
+                                                          reverseDuration:
+                                                              dialogueAnimationDuration,
+                                                          child: songEditPage),
                                                     );
                                                   } catch (e) {
                                                     Flushbar(
@@ -931,21 +1023,58 @@ class _OnHoldExtendedState extends State<OnHoldExtended> {
                                                   await screenShotUI(false);
                                                   await setHomeScreenWallpaper();
                                                 } else if (i == 8) {
-                                                  if (isAndroid11) {
-                                                    Navigator.pop(context);
-                                                    androidRSupport(context);
-                                                  } else {
-                                                    if (await Permission.storage
-                                                        .request()
-                                                        .isGranted) {
-                                                      await deleteAFile(
+                                                  // if (androidSdkVersion >= 30) {
+                                                  //   Navigator.pop(context);
+                                                  //   androidRSupport(context);
+                                                  // } else {
+                                                  // if (await Permission.storage
+                                                  //     .request()
+                                                  //     .isGranted) {
+                                                  // await mediaStorePlugin
+                                                  //     .getUriFromFilePath(
+                                                  //         path: songList[
+                                                  //                 indexOfList]
+                                                  //             .data)
+                                                  //     .then((uri) async {
+                                                  //   await mediaStorePlugin
+                                                  //       .deleteFileUsingUri(
+                                                  //     uriString: uri.toString(),
+                                                  //   );
+                                                  // });
+                                                  // await deleteAFile(
+                                                  //     songList[indexOfList]
+                                                  //         .data);
+                                                  try {
+                                                    if (androidSdkVersion <
+                                                        29) {
+                                                      await deleteFileUsingPath(
                                                           songList[indexOfList]
                                                               .data);
-                                                      Navigator.pop(context);
-                                                      refresh = true;
-                                                      rootState.provideman();
+                                                    } else {
+                                                      await deleteFileWithMediaStore(
+                                                          songList[indexOfList]
+                                                              .data);
                                                     }
+                                                    Navigator.pop(context);
+                                                    refresh = true;
+                                                    rootState.provideman();
+                                                  } catch (e) {
+                                                    Navigator.pop(context);
+                                                    print("this? $e");
+                                                    Snack().showFlushbar(
+                                                        context: context,
+                                                        message:
+                                                            "Failed to delete file",
+                                                        icon: const Icon(
+                                                          Icons.error_outline,
+                                                          size: 28.0,
+                                                          color:
+                                                              Color(0xFFCB0447),
+                                                        ));
                                                   }
+
+                                                  // }
+                                                  // }
                                                 }
                                               },
                                               child: Center(

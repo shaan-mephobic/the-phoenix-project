@@ -25,13 +25,12 @@ class SwitcherButton extends StatefulWidget {
   final Function(bool value)? onChange;
 
   SwitcherButton(
-      {Key? key,
+      {super.key,
       this.size = 60.0,
       this.onColor = Colors.white,
       this.offColor = Colors.black87,
       this.value = false,
-      this.onChange})
-      : super(key: key) {
+      this.onChange}) {
     _width = size;
     _height = size / 2;
   }

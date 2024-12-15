@@ -13,6 +13,7 @@
 * along with The Phoenix Project.  If not, see <http://www.gnu.org/licenses/>.
 ---------------------------------------------------------------------------------------------------------*/
 
+import 'dart:io';
 import 'package:phoenix/src/beginning/utilities/audio_handlers/background.dart';
 import 'package:phoenix/src/beginning/utilities/constants.dart';
 import 'package:phoenix/src/beginning/pages/settings/settings_pages/privacy.dart';
@@ -26,7 +27,7 @@ import 'package:provider/provider.dart';
 import 'src/beginning/begin.dart';
 
 void main() async {
-  Paint.enableDithering = true;
+  HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await cacheImages();
   await dataInit();
@@ -34,6 +35,7 @@ void main() async {
   audioHandler = await AudioService.init(
     builder: () => AudioPlayerTask(),
     config: const AudioServiceConfig(
+      androidStopForegroundOnPause: false,
       androidNotificationChannelName: "Phoenix Music",
       androidNotificationIcon: "drawable/phoenix_awaken",
       androidNotificationChannelDescription: "Phoenix Music Notification",
@@ -60,4 +62,13 @@ void main() async {
       ),
     ),
   );
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
 }

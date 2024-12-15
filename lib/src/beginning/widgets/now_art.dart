@@ -1,3 +1,4 @@
+import 'package:phoenix/src/beginning/utilities/audio_handlers/previous_play_skip.dart';
 import 'package:phoenix/src/beginning/utilities/constants.dart';
 import 'package:phoenix/src/beginning/utilities/global_variables.dart';
 import 'package:phoenix/src/beginning/utilities/page_backend/albums_back.dart';
@@ -7,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class NowArt extends StatelessWidget {
   final bool car;
-  const NowArt(this.car, {Key? key}) : super(key: key);
+  const NowArt(this.car, {super.key});
   @override
   Widget build(BuildContext context) {
     return Consumer<Leprovider>(
@@ -27,10 +28,12 @@ class NowArt extends StatelessWidget {
                         borderRadius: BorderRadius.circular(kRounded),
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: MemoryImage(artworksData[
-                                  (musicBox.get("artworksPointer") ??
-                                      {})[nowMediaItem.extras!["id"]]] ??
-                              defaultNone!),
+                          image: rnAccessing == "online"
+                              ? MemoryImage(artwork!)
+                              : MemoryImage(artworksData[
+                                      (musicBox.get("artworksPointer") ??
+                                          {})[nowMediaItem.extras!["id"]]] ??
+                                  defaultNone!),
                         ),
                       ),
                     ),
@@ -56,7 +59,7 @@ class NowArt extends StatelessWidget {
 
 class NowArtLandScape extends StatelessWidget {
   final bool car;
-  const NowArtLandScape(this.car, {Key? key}) : super(key: key);
+  const NowArtLandScape(this.car, {super.key});
   @override
   Widget build(BuildContext context) {
     return Consumer<Leprovider>(

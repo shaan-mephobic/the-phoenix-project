@@ -22,7 +22,7 @@ import 'genres.dart';
 List? insidegenreSongs = [];
 
 class GenresInside extends StatefulWidget {
-  const GenresInside({Key? key}) : super(key: key);
+  const GenresInside({super.key});
 
   @override
   State<GenresInside> createState() => _GenresInsideState();

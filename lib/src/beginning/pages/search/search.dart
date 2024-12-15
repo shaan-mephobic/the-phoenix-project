@@ -22,7 +22,7 @@ import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Searchin extends StatefulWidget {
-  const Searchin({Key? key}) : super(key: key);
+  const Searchin({super.key});
 
   @override
   State<Searchin> createState() => _SearchinState();
@@ -77,7 +77,7 @@ class _SearchinState extends State<Searchin> {
       }
       searchedAlbums = [];
       for (int i = 0; i < allAlbums.length; i++) {
-        if (allAlbums[i].album.contains(name)) {
+        if (allAlbums[i].album.toUpperCase().contains(name.toUpperCase())) {
           searchedAlbums.add(allAlbums[i]);
         }
       }

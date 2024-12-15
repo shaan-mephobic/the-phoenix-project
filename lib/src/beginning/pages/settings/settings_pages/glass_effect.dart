@@ -8,7 +8,7 @@ import 'package:phoenix/src/beginning/widgets/artwork_background.dart';
 import 'package:provider/provider.dart';
 
 class GlassEffect extends StatefulWidget {
-  const GlassEffect({Key? key}) : super(key: key);
+  const GlassEffect({super.key});
 
   @override
   State<GlassEffect> createState() => _GlassEffectState();

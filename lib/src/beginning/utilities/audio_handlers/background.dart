@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:audio_service/audio_service.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:phoenix/src/beginning/utilities/global_variables.dart';
 
@@ -8,10 +10,15 @@ class AudioPlayerTask extends BaseAudioHandler {
     _init();
   }
   List<MediaItem> leQueue = [];
-  final AudioPlayer _audioPlayer = AudioPlayer(
-    handleInterruptions: true,
+  late final AudioPlayer _audioPlayer = AudioPlayer(
+    handleInterruptions: false,
     androidApplyAudioAttributes: true,
-    handleAudioSessionActivation: true,
+    handleAudioSessionActivation: false,
+    audioPipeline: AudioPipeline(
+      androidAudioEffects: [
+        equalizer,
+      ],
+    ),
   );
   int indexOfQueue = 0;
   int addToQueueIndex = -1;
@@ -19,8 +26,10 @@ class AudioPlayerTask extends BaseAudioHandler {
   late StreamSubscription<PlaybackEvent> _eventSubscription;
   late ConcatenatingAudioSource source;
   int clicks = 0;
+  bool playInterrupted = false;
 
   _init() {
+    _handleSession();
     // Broadcast that we're connecting, and what controls are available.
     _eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
       _broadcastState();
@@ -45,6 +54,64 @@ class AudioPlayerTask extends BaseAudioHandler {
         default:
           break;
       }
+    });
+  }
+
+  void _handleSession() async {
+    final audioSession = await AudioSession.instance;
+    await audioSession.configure(const AudioSessionConfiguration.music());
+    audioSession.becomingNoisyEventStream.listen((_) {
+      print('PAUSE');
+      _audioPlayer.pause();
+    });
+    _audioPlayer.playingStream.listen((playing) {
+      if (playing) {
+        audioSession.setActive(true);
+      }
+    });
+    audioSession.interruptionEventStream.listen((event) {
+      print('interruption begin: ${event.begin}');
+      print('interruption type: ${event.type}');
+      if (event.begin) {
+        switch (event.type) {
+          case AudioInterruptionType.duck:
+            playInterrupted = false;
+            break;
+          case AudioInterruptionType.pause:
+          case AudioInterruptionType.unknown:
+            if (_audioPlayer.playing) {
+              _audioPlayer.pause();
+              playInterrupted = true;
+              print("Got it?");
+            }
+            break;
+        }
+      } else {
+        switch (event.type) {
+          case AudioInterruptionType.duck:
+            print("duck");
+            _audioPlayer.setVolume(min(1.0, _audioPlayer.volume * 2));
+            playInterrupted = false;
+            break;
+          case AudioInterruptionType.pause:
+            print("Hmm?");
+            if (playInterrupted) {
+              // _audioPlayer.play();
+              _audioPlayer.play();
+              print("resume");
+            }
+            playInterrupted = false;
+            break;
+          case AudioInterruptionType.unknown:
+            print("unknown");
+            playInterrupted = false;
+            break;
+        }
+      }
+    });
+    audioSession.devicesChangedEventStream.listen((event) {
+      print('Devices added: ${event.devicesAdded}');
+      print('Devices removed: ${event.devicesRemoved}');
     });
   }
 

@@ -30,14 +30,13 @@ import 'package:phoenix/src/beginning/utilities/visualizer_notification.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'pages/albums/albums.dart';
 import 'package:flutter_remixicon/flutter_remixicon.dart';
 
 class Begin extends StatefulWidget {
   static final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   static bool isLoading = true;
-  const Begin({Key? key}) : super(key: key);
+  const Begin({super.key});
   @override
   State<Begin> createState() => _BeginState();
 }
@@ -150,7 +149,7 @@ class _BeginState extends State<Begin>
               rootState.provideman();
             }
           },
-          collapsed: musicBox.get("classix") ?? true ? Classix() : Moderna(),
+          collapsed: Classix(),
           maxHeight: deviceHeight!,
           backdropTapClosesPanel: true,
           renderPanelSheet: true,
@@ -238,10 +237,14 @@ class _BeginState extends State<Begin>
                                 ? Colors.white
                                 : Colors.white,
                             indicatorWeight: 0.000001,
+                            tabAlignment: TabAlignment.start,
                             isScrollable: true,
                             enableFeedback: false,
+                            dividerColor: Colors.transparent,
                             physics: const ScrollPhysics(),
                             controller: tabController,
+                            // labelPadding: EdgeInsets.only(right: 100),
+                            // padding: EdgeInsets.only(right: 140),
                             tabs: tabsData(deviceWidth!, deviceHeight),
                             indicatorColor: Colors.transparent,
                           ),

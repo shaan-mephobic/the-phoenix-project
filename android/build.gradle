@@ -1,15 +1,16 @@
-buildscript {
-    ext.kotlin_version = '1.6.21'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
+//buildscript {
+//    ext.kotlin_version = '1.7.10'
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//    dependencies {
+//        //flutter https://stackoverflow.com/a/72630685/14595863
+//        classpath 'com.android.tools.build:gradle:7.3.0'
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//
+//    }
+//}
 
 allprojects {
     repositories {
@@ -30,6 +31,6 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-task clean(type: Delete) {
+tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

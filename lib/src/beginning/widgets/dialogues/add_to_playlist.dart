@@ -10,13 +10,13 @@ class AddToPlaylist extends StatefulWidget {
   final String songFile;
   final Map data;
   const AddToPlaylist({
-    Key? key,
+    super.key,
     required this.heightOfDevice,
     required this.widthOfDevice,
     required this.songFile,
     required this.car,
     required this.data,
-  }) : super(key: key);
+  });
 
   @override
   State<AddToPlaylist> createState() => _AddToPlaylistState();

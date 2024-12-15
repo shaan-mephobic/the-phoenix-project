@@ -15,7 +15,7 @@ List<SongModel>? genreSongs;
 List<MediaItem> genreMediaItems = [];
 
 class Genres extends StatefulWidget {
-  const Genres({Key? key}) : super(key: key);
+  const Genres({super.key});
 
   @override
   State<Genres> createState() => _GenresState();

@@ -4,19 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:phoenix/src/beginning/utilities/constants.dart';
 import 'package:phoenix/src/beginning/utilities/edit_song.dart';
 import 'package:phoenix/src/beginning/utilities/global_variables.dart';
+import 'package:phoenix/src/beginning/widgets/snack.dart';
 
 class SongEdit extends StatefulWidget {
   final double? heightOfDevice;
   final double? widthOfDevice;
   final bool car;
-  final String title;
+  final String? title;
   final String? artist;
   final String? album;
   final String? genre;
   final String filePath;
   final Uint8List? artwork;
   const SongEdit(
-      {Key? key,
+      {super.key,
       required this.heightOfDevice,
       required this.widthOfDevice,
       required this.car,
@@ -25,8 +26,7 @@ class SongEdit extends StatefulWidget {
       required this.album,
       required this.genre,
       required this.filePath,
-      required this.artwork})
-      : super(key: key);
+      required this.artwork});
   @override
   State<SongEdit> createState() => _SongEditState();
 }
@@ -107,7 +107,7 @@ class _SongEditState extends State<SongEdit> with TickerProviderStateMixin {
                                   cursorColor: const Color(0xFF3cb9cd),
                                   autofocus: false,
                                   controller: TextEditingController()
-                                    ..text = title!,
+                                    ..text = title ?? "",
                                   style: const TextStyle(
                                     color: Colors.white,
                                   ),
@@ -161,7 +161,7 @@ class _SongEditState extends State<SongEdit> with TickerProviderStateMixin {
                                   cursorColor: const Color(0xFF3cb9cd),
                                   autofocus: false,
                                   controller: TextEditingController()
-                                    ..text = album!,
+                                    ..text = album ?? "",
                                   style: const TextStyle(
                                     color: Colors.white,
                                   ),
@@ -215,7 +215,7 @@ class _SongEditState extends State<SongEdit> with TickerProviderStateMixin {
                                   cursorColor: const Color(0xFF3cb9cd),
                                   autofocus: false,
                                   controller: TextEditingController()
-                                    ..text = artist!,
+                                    ..text = artist ?? "",
                                   style: const TextStyle(
                                     color: Colors.white,
                                   ),
@@ -270,7 +270,7 @@ class _SongEditState extends State<SongEdit> with TickerProviderStateMixin {
                                   cursorColor: const Color(0xFF3cb9cd),
                                   autofocus: false,
                                   controller: TextEditingController()
-                                    ..text = genre!,
+                                    ..text = genre ?? "",
                                   style: const TextStyle(
                                     color: Colors.white,
                                   ),
@@ -328,17 +328,27 @@ class _SongEditState extends State<SongEdit> with TickerProviderStateMixin {
                                 onTap: () async {
                                   if (shouldEdit) {
                                     Navigator.pop(context);
-                                    await editSong(
-                                        context: context,
-                                        songFile: widget.filePath,
-                                        title: title,
-                                        album: album,
-                                        artist: artist,
-                                        genre: genre);
-                                    await Future.delayed(
-                                        const Duration(seconds: 1));
-                                    refresh = true;
-                                    rootState.provideman();
+                                    try {
+                                      await editSong(
+                                          context: context,
+                                          songFile: widget.filePath,
+                                          title: title,
+                                          album: album,
+                                          artist: artist,
+                                          genre: genre);
+                                      refresh = true;
+                                      rootState.provideman();
+                                    } catch (e) {
+                                      debugPrint(e.toString());
+                                      Snack().showFlushbar(
+                                          context: context,
+                                          message: "Failed to delete file",
+                                          icon: const Icon(
+                                            Icons.error_outline,
+                                            size: 28.0,
+                                            color: Color(0xFFCB0447),
+                                          ));
+                                    }
                                   } else {
                                     Navigator.pop(context);
                                   }

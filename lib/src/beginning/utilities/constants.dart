@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:phoenix/src/beginning/widgets/custom/ripple.dart';
 
 /// The default black Color
 Color kMaterialBlack = const Color(0xFF000000);
@@ -58,10 +57,11 @@ Map<String, String> changelogs = {
 
 /// Theme data of entire app
 ThemeData themeOfApp = ThemeData(
-  splashFactory: CustomRipple.splashFactory,
   unselectedWidgetColor: Colors.grey[900],
   scaffoldBackgroundColor: kMaterialBlack,
+  useMaterial3: false,
   fontFamily: "Urban",
+  focusColor: Colors.transparent,
   dividerTheme: const DividerThemeData(
     color: Colors.white54,
   ),

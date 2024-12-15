@@ -50,11 +50,16 @@ artistsAllSongs(String who) async {
   inArtistsSongs = [];
   artistMediaItems = [];
 
+  // look for the artist in the songList, this makes it not follow album order
   for (int i = 0; i < songList.length; i++) {
     if (songList[i].artist!.toLowerCase() == who.toLowerCase()) {
       inArtistsSongs.add(songList[i]);
     }
   }
+
+  // https: //github.com/shaan-mephobic/The-Phoenix-Project/issues/4
+  // to sort them in the album order too we try querying from on_audio_query
+  // TODO
 
   int sort = (musicBox.get('artistSort') ?? [0, 3])[0];
   int order = (musicBox.get('artistSort') ?? [0, 3])[1];

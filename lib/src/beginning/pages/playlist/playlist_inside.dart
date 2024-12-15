@@ -24,8 +24,7 @@ List<MediaItem> playlistMediaItems = [];
 
 class PlaylistInside extends StatefulWidget {
   final String? playlistName;
-  const PlaylistInside({Key? key, required this.playlistName})
-      : super(key: key);
+  const PlaylistInside({super.key, required this.playlistName});
   @override
   State<PlaylistInside> createState() => _PlaylistInsideState();
 }

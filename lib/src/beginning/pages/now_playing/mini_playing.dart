@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:phoenix/src/beginning/widgets/seek_bar.dart';
 
 class Moderna extends StatefulWidget {
-  const Moderna({Key? key}) : super(key: key);
+  const Moderna({super.key});
 
   @override
   State<Moderna> createState() => _ModernaState();
@@ -142,7 +142,7 @@ class _ModernaState extends State<Moderna> {
 }
 
 class Classix extends StatefulWidget {
-  const Classix({Key? key}) : super(key: key);
+  const Classix({super.key});
 
   @override
   State<Classix> createState() => _ClassixState();
@@ -157,17 +157,10 @@ class _ClassixState extends State<Classix> {
         color: musicBox.get("dynamicArtDB") ?? true ? nowColor : kMaterialBlack,
       ),
       child: Column(
-        mainAxisAlignment: musicBox.get("miniPlayerProgress") == "Bottom"
+        mainAxisAlignment: musicBox.get("miniPlayerPosition") == "Bottom"
             ? MainAxisAlignment.end
             : MainAxisAlignment.start,
         children: [
-          Visibility(
-              visible: musicBox.get("miniPlayerProgress") == null
-                  ? true
-                  : musicBox.get("miniPlayerProgress") == "Top"
-                      ? true
-                      : false,
-              child: const MiniSeekbar()),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -303,9 +296,12 @@ class _ClassixState extends State<Classix> {
             ),
           ),
           Visibility(
-              visible:
-                  musicBox.get("miniPlayerProgress") == "Bottom" ? true : false,
-              child: const MiniSeekbar())
+              visible: musicBox.get("miniPlayerPosition") == null
+                  ? true
+                  : musicBox.get("miniPlayerPosition") == "Bottom"
+                      ? true
+                      : false,
+              child: const MiniSeekbar()),
         ],
       ),
     );

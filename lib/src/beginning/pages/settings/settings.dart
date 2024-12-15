@@ -21,7 +21,7 @@ List settingsList = [
 late var globalRotational;
 
 class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
+  const Settings({super.key});
 
   @override
   State<Settings> createState() => _SettingsState();
@@ -315,7 +315,7 @@ yeahRotate() async {
       breakRotate = false;
       break high;
     }
-    await Future.delayed(const Duration(milliseconds: 60));
+    await Future.delayed(const Duration(milliseconds: 50));
     drotate -= 1;
     globalRotational.rotator(drotate);
   }

@@ -41,8 +41,7 @@ class ListHeader extends StatelessWidget {
     'Descending'
   ];
   const ListHeader(this.widthOfDevice, this.listOfSong, this.rnAccess,
-      {Key? key, this.stateNotifier})
-      : super(key: key);
+      {super.key, this.stateNotifier});
   @override
   Widget build(BuildContext context) {
     return Container(

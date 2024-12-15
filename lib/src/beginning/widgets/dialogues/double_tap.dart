@@ -25,8 +25,7 @@ onDoubleTap(BuildContext context) async {
       backgroundColor: glassOpacity!,
       flushbarStyle: FlushbarStyle.FLOATING,
       isDismissible: true,
-      barBlur:
-          musicBox.get("glassBlur") ?? 18,
+      barBlur: musicBox.get("glassBlur") ?? 18,
       margin: const EdgeInsets.only(bottom: 20, left: 8, right: 8),
       borderRadius: BorderRadius.circular(15),
     ).show(context);
@@ -36,10 +35,10 @@ onDoubleTap(BuildContext context) async {
     Flushbar(
       messageText: const Text("Added To Liked Songs",
           style: TextStyle(fontFamily: "Futura", color: Colors.white)),
-      icon: const Icon(
+      icon: Icon(
         MdiIcons.heart,
         size: 28.0,
-        color: Color(0xFFCB0447),
+        color: const Color(0xFFCB0447),
       ),
       shouldIconPulse: true,
       dismissDirection: FlushbarDismissDirection.HORIZONTAL,
@@ -49,8 +48,7 @@ onDoubleTap(BuildContext context) async {
       backgroundColor: glassOpacity!,
       flushbarStyle: FlushbarStyle.FLOATING,
       isDismissible: true,
-      barBlur:
-          musicBox.get("glassBlur") ?? 18,
+      barBlur: musicBox.get("glassBlur") ?? 18,
       margin: const EdgeInsets.only(bottom: 20, left: 8, right: 8),
       borderRadius: BorderRadius.circular(15),
     ).show(context);

@@ -1,22 +1,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools" 
-  package="com.Phoenix.project">
+  xmlns:tools="http://schemas.android.com/tools">
+
 
   <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-      tools:ignore="ScopedStorage" />
+  <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+  <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+  <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+  <uses-permission android:name="android.permission.SET_WALLPAPER" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-  <uses-permission android:name="android.permission.SET_WALLPAPER"/>
-  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
   <uses-permission android:name="android.permission.FLASHLIGHT"/>
-  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
   <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"
       tools:ignore="ProtectedPermissions" />
   <uses-permission android:name="android.permission.WRITE_SETTINGS"
       tools:ignore="ProtectedPermissions" />
+
 
   <queries>
     <intent>
@@ -32,8 +36,10 @@
   <application 
       android:name="${applicationName}" 
       android:label="The Phoenix Project" 
-      android:icon="@mipmap/ic_launcher" 
+      android:icon="@mipmap/ic_launcher"
       android:requestLegacyExternalStorage="true">
+
+
     <activity 
         android:name=".MainActivity" 
         android:launchMode="singleTop" 
@@ -43,7 +49,9 @@
         android:windowSoftInputMode="adjustResize" 
         android:exported="true"
         tools:ignore="Instantiatable"
-        android:stopWithTask="false">
+        android:stopWithTask="false"
+        android:enableOnBackInvokedCallback="true"
+        >
 
       <meta-data 
           android:name="io.flutter.embedding.android.NormalTheme" 
@@ -55,12 +63,17 @@
       </intent-filter>
       
     </activity>
-    <service android:name="com.ryanheise.audioservice.AudioService" android:exported="true" tools:ignore="Instantiatable">
+    <service android:name="com.ryanheise.audioservice.AudioService"
+        android:foregroundServiceType="mediaPlayback"
+        android:exported="true" tools:ignore="Instantiatable,MissingClass">
       <intent-filter>
         <action android:name="android.media.browse.MediaBrowserService" />
       </intent-filter>
     </service>
-    <receiver android:name="com.ryanheise.audioservice.MediaButtonReceiver" android:exported="true" tools:ignore="Instantiatable">
+
+    <!-- ADD THIS "RECEIVER" element -->
+    <receiver android:name="com.ryanheise.audioservice.MediaButtonReceiver"
+        android:exported="true" tools:ignore="Instantiatable">
       <intent-filter>
         <action android:name="android.intent.action.MEDIA_BUTTON" />
       </intent-filter>

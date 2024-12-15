@@ -21,15 +21,17 @@ import '../../utilities/page_backend/mansion_back.dart';
 var globalMansionConsumer;
 
 class Mansion extends StatefulWidget {
-  const Mansion({Key? key}) : super(key: key);
+  const Mansion({super.key});
 
   @override
   State<Mansion> createState() => _MansionState();
 }
 
 class _MansionState extends State<Mansion> with AutomaticKeepAliveClientMixin {
+  FocusNode focusNode = FocusNode();
   List<int> albumIndex = [69420, 69421, 69422, 69423, 69424, 69425];
   List<int> artistIndex = [69420, 69421, 69422, 69423, 69424, 69425];
+  String? downloadInput;
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -51,8 +53,178 @@ class _MansionState extends State<Mansion> with AutomaticKeepAliveClientMixin {
                 ? const BouncingScrollPhysics()
                 : const ClampingScrollPhysics(),
             children: [
-              Padding(padding: EdgeInsets.only(top: deviceWidth! / 14)),
+              // // download
+              // Padding(
+              //   padding: EdgeInsets.only(bottom: deviceWidth! / 8),
+              //   child: SizedBox(
+              //     // height: deviceWidth! / 1.6,
+              //     width: deviceWidth,
+              //     child: Column(
+              //       children: [
+              //         Padding(padding: EdgeInsets.only(top: deviceWidth! / 6)),
+              //         SizedBox(
+              //           height: deviceWidth! / 9,
+              //           child: Center(
+              //             child: Text(
+              //               "Online",
+              //               style: TextStyle(
+              //                   fontSize: deviceWidth! / 15,
+              //                   fontWeight: FontWeight.w600,
+              //                   color: Colors.white),
+              //             ),
+              //           ),
+              //         ),
+              //         Padding(
+              //           padding: EdgeInsets.only(
+              //               top: deviceWidth! / 7, bottom: deviceWidth! / 23),
+              //           child: Container(
+              //             padding: const EdgeInsets.only(left: 10, right: 10),
+              //             height: 120,
+              //             width: double.infinity,
+              //             color: Colors.transparent,
+              //             child: Center(
+              //               child: Container(
+              //                 height: 60,
+              //                 decoration: BoxDecoration(
+              //                   boxShadow: [
+              //                     BoxShadow(
+              //                       color: Colors.black
+              //                           .withOpacity(glassShadowOpacity! / 100),
+              //                       blurRadius: glassShadowBlur,
+              //                       offset: kShadowOffset,
+              //                     ),
+              //                   ],
+              //                   borderRadius: BorderRadius.circular(kRounded),
+              //                 ),
+              //                 child: ClipRRect(
+              //                   borderRadius: BorderRadius.circular(kRounded),
+              //                   child: BackdropFilter(
+              //                     filter: glassBlur,
+              //                     child: Container(
+              //                       alignment: Alignment.center,
+              //                       decoration: BoxDecoration(
+              //                         borderRadius:
+              //                             BorderRadius.circular(kRounded),
+              //                         border: Border.all(
+              //                             color:
+              //                                 Colors.white.withOpacity(0.04)),
+              //                         color: glassOpacity,
+              //                       ),
+              //                       child: TextField(
+              //                         textAlignVertical:
+              //                             TextAlignVertical.center,
+              //                         cursorColor: const Color(0xFF3cb9cd),
+              //                         focusNode: focusNode,
+              //                         autofocus: false,
+              //                         style:
+              //                             const TextStyle(color: Colors.white),
+              //                         onChanged: (String? thetext) {
+              //                           downloadInput = thetext;
+              //                         },
+              //                         decoration: InputDecoration(
+              //                           isCollapsed: true,
+              //                           suffixIcon: Icon(MdiIcons.spotify,
+              //                               color: Colors.white),
+              //                           prefixIcon: Material(
+              //                             color: Colors.transparent,
+              //                             child: Icon(
+              //                               MdiIcons.download,
+              //                               color: Colors.white,
+              //                             ),
+              //                           ),
+              //                           border: const OutlineInputBorder(),
+              //                           enabledBorder: const OutlineInputBorder(
+              //                             borderSide: BorderSide(
+              //                                 color: Colors.transparent),
+              //                           ),
+              //                           focusedBorder: const OutlineInputBorder(
+              //                               borderSide: BorderSide(
+              //                                   color: Colors.transparent)),
+              //                           hintStyle:
+              //                               TextStyle(color: Colors.grey[350]),
+              //                           hintText:
+              //                               "Paste the link or search song.",
+              //                         ),
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         ElevatedButton.icon(
+              //           style: ButtonStyle(
+              //               backgroundColor: MaterialStateProperty.all(
+              //                   const Color(0xFF1DB954))),
+              //           icon: const Icon(
+              //             MIcon.riSearchLine,
+              //             color: Colors.black,
+              //           ),
+              //           onPressed: () async {
+              //             
+              //             FocusManager.instance.primaryFocus?.unfocus();
+              //             if (downloadInput == null || downloadInput!.isEmpty) {
+              //               Flushbar(
+              //                 messageText: const Text("Provide a song!",
+              //                     style: TextStyle(
+              //                         fontFamily: "Futura",
+              //                         color: Colors.white)),
+              //                 icon: const Icon(
+              //                   Icons.error_outline,
+              //                   size: 28.0,
+              //                   color: Color(0xFFCB0447),
+              //                 ),
+              //                 shouldIconPulse: true,
+              //                 dismissDirection:
+              //                     FlushbarDismissDirection.HORIZONTAL,
+              //                 duration: const Duration(seconds: 3),
+              //                 borderColor: Colors.white.withOpacity(0.04),
+              //                 borderWidth: 1,
+              //                 backgroundColor: glassOpacity!,
+              //                 flushbarStyle: FlushbarStyle.FLOATING,
+              //                 isDismissible: true,
+              //                 barBlur: musicBox.get("glassBlur") ?? 18,
+              //                 margin: const EdgeInsets.only(
+              //                     bottom: 20, left: 8, right: 8),
+              //                 borderRadius: BorderRadius.circular(15),
+              //               ).show(context);
+              //             } else {
+              //               await Navigator.push(
+              //                 context,
+              //                 MaterialPageRoute(
+              //                   maintainState: true,
+              //                   builder: (context) => MultiProvider(
+              //                     providers: [
+              //                       ChangeNotifierProvider<Leprovider>(
+              //                         create: (_) => Leprovider(),
+              //                       ),
+              //                       ChangeNotifierProvider<MrMan>(
+              //                         create: (_) => MrMan(),
+              //                       ),
+              //                     ],
+              //                     builder: (context, child) => DownloadList(
+              //                       downloadInput: downloadInput!,
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ).then((value) {
+              //                 rootState.provideman();
+              //               });
+              //             }
+              //           },
+              //           label: Text("Search",
+              //               style: TextStyle(
+              //                   color: Colors.black,
+              //                   fontSize: deviceWidth! / 25,
+              //                   fontWeight: FontWeight.w600)),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               // Recently Played
+              Padding(padding: EdgeInsets.only(top: deviceWidth! / 7)),
               Container(
                 height: deviceWidth! / 1.636,
                 width: deviceWidth,

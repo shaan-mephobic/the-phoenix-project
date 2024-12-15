@@ -11,7 +11,7 @@ import 'add_songs.dart';
 List? modifyPlayList = [];
 
 class Playlist extends StatefulWidget {
-  const Playlist({Key? key}) : super(key: key);
+  const Playlist({super.key});
 
   @override
   State<Playlist> createState() => _PlaylistState();

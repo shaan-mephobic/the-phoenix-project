@@ -10,7 +10,7 @@ import 'package:phoenix/src/beginning/pages/playlist/playlist_inside.dart';
 import 'package:phoenix/src/beginning/utilities/audio_handlers/artwork.dart';
 import 'package:phoenix/src/beginning/utilities/screenshot_ui.dart';
 import '../page_backend/mansion_back.dart';
-import 'package:phoenix/src/beginning/utilities/scraping/lyrics_scrape.dart';
+import 'package:phoenix/src/beginning/utilities/apis/lyrics_scrape.dart';
 import '../filters.dart';
 
 int? indexofcurrent;
@@ -56,13 +56,13 @@ audioServiceStream() async {
 }
 
 updateStuffs() async {
-  await playerontap();
+  await playerontap(onlineArtwork: artOfOnline);
   if (onLyrics) lyricsFoo();
   updateMansion();
   updateThings();
 }
 
-playThis(int indexOfSong, rnAccess) async {
+playThis(int indexOfSong, String rnAccess, {Map? saavnData}) async {
   lyricsDat = "";
   if (rnAccess == "all") {
     rnAccessing = "all";
@@ -92,6 +92,19 @@ playThis(int indexOfSong, rnAccess) async {
     rnAccessing = "playlist";
     await goToAudioService(
         indexOfSong, insideplaylistSongsInside, playlistMediaItems);
+  } else if (rnAccess == "online") {
+    rnAccessing = "online";
+    //  {id: sxZ-SMqJ, type: song, album: ICYMI, year: 2022, duration: 380, language: English, genre: English, 320kbps: true, has_lyrics: true, lyrics_snippet: That I'm caved in and breaking up, release_date: null, album_id: 37130265, subtitle: Eden - ICYMI, title: Call Me Back, artist: Eden, album_artist: , image: https://c.saavncdn.com/925/ICYMI-English-2022-20220923134442-500x500.jpg, perma_url: https://www.jiosaavn.com/song/call-me-back/AxAxHCd9Rnk, url: https://aac.saavncdn.com/925/c7a257565435daa47305868fc6ccf9b7_96.mp4}
+    await audioHandler.updateQueue([
+      MediaItem(
+        id: saavnData!['url'],
+        album: saavnData['album'] ?? "Unknown",
+        title: saavnData['title'] ?? "Unknown",
+        artist: saavnData['artist'] ?? "Unknown",
+        duration: Duration(seconds: int.parse(saavnData['duration'])),
+        artUri: Uri.parse(saavnData['image']),
+      )
+    ]);
   }
   if (shuffleSelected) {
     await shuffleMode();
@@ -114,10 +127,10 @@ void lyricsFoo() async {
       if (lyricsDat == "Couldn't find any matching lyrics." ||
           lyricsDat == "" ||
           lyricsDat == " ") {
-        holdUpLyrics();
+        handleLyrics();
       }
     } else {
-      holdUpLyrics();
+      handleLyrics();
     }
   }
 }
@@ -179,7 +192,7 @@ Future<void> shuffleMode() async {
   }
 }
 
-void holdUpLyrics() async {
+void handleLyrics() async {
   String artistsLyric = nowMediaItem.artist.toString();
   String songNameLyric = nowMediaItem.title.toString();
   songNameLyric = aestheticText(songNameLyric);

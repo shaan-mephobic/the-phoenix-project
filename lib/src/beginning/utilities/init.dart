@@ -5,6 +5,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:metadata_god/metadata_god.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,14 +16,14 @@ import 'package:phoenix/src/beginning/utilities/page_backend/albums_back.dart';
 import 'package:phoenix/src/beginning/utilities/page_backend/artists_back.dart';
 import 'package:phoenix/src/beginning/utilities/page_backend/genres_back.dart';
 import 'package:phoenix/src/beginning/utilities/page_backend/mansion_back.dart';
-import 'package:phoenix/src/beginning/utilities/scraping/image_scrape.dart';
-
+import 'package:phoenix/src/beginning/utilities/apis/image_scrape.dart';
 import 'has_network.dart';
 
 cacheImages() async {
   applicationFileDirectory = await getApplicationDocumentsDirectory();
   // next update -> https://www.pexels.com/photo/white-and-black-fur-textile-1793273/
-  ByteData bytes = await rootBundle.load('assets/res/background4.jpg');
+  ByteData bytes =
+      await rootBundle.load('assets/res/pexels-lucas-cavalcante-1793273.jpg');
   art = bytes.buffer.asUint8List();
   defaultArt = art;
   if (!await File("${applicationFileDirectory.path}/artworks/null.jpeg")
@@ -40,7 +41,12 @@ dataInit() async {
   await Hive.initFlutter();
   musicBox = await Hive.openBox('musicDataBox');
   var info = await DeviceInfoPlugin().androidInfo;
-  isAndroid11 = info.version.sdkInt > 29 ? true : false;
+  androidSdkVersion = info.version.sdkInt;
+  print(androidSdkVersion);
+  if (androidSdkVersion >= 30) {
+    MetadataGod.initialize();
+  }
+  // isAndroid11Above = info.version.sdkInt > 29 ? true : false;
   glassBlur = ImageFilter.blur(
       sigmaX: musicBox.get("glassBlur") ?? 10,
       sigmaY: musicBox.get("glassBlur") ?? 10);
@@ -49,8 +55,26 @@ dataInit() async {
   glassShadowOpacity = musicBox.get("glassShadow") ?? 6;
 }
 
+//  bool _hasPermission = false;
+//   checkAndRequestPermissions({bool retry = false}) async {
+//     final OnAudioQuery _audioQuery = OnAudioQuery();
+//     // The param 'retryRequest' is false, by default.
+//     _hasPermission = await _audioQuery.checkAndRequest(
+//       retryRequest: retry,
+//     );
+
+// Only call update the UI if application has all required permissions.
+// _hasPermission ? setState(() {}) : null;
+// }
+
 fetchSongs() async {
-  if (await Permission.storage.request().isGranted) {
+  print("fetching songs");
+  if ((androidSdkVersion >= 33 &&
+          await Permission.audio.request().isGranted &&
+          await Permission.videos.request().isGranted &&
+          await Permission.photos.request().isGranted) ||
+      (await Permission.storage.request().isGranted)) {
+    print("1111");
     List songSortTypes = [
       SongSortType.TITLE,
       SongSortType.DATE_ADDED,

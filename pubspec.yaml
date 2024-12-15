@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 2.4.0+14
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ^3.0.0
 
 dependencies:
   flutter:
@@ -26,33 +26,53 @@ dependencies:
 
   # UI Related
   another_flushbar: ^1.10.29
-  another_xlider: ^1.1.2
+  another_xlider: ^3.0.2
   animated_text_kit: ^4.2.2
   flare_flutter: ^3.0.2
   flare_loading: ^3.0.0
-  page_transition: ^2.0.9
-  palette_generator: ^0.3.3+1
+  page_transition: ^2.1.0
+  palette_generator: ^0.3.3+4
   sleek_circular_slider: ^2.0.1
   sliding_up_panel: ^2.0.0+1
 
 
   # AUDIO Related
-  audio_service: ^0.18.7
+  audio_service: ^0.18.15
+  audio_session: ^0.1.21
   flutter_ffmpeg: ^0.4.2
-  just_audio: ^0.9.28
-  on_audio_edit: ^1.4.0+1
-  on_audio_query: '2.6.1'
+  just_audio: ^0.9.41
+  on_audio_edit:
+    path: Z:/Not-Mine/on_audio_edit
+  on_audio_query: '2.9.0'
+  # metadata_god: '0.5.2+1'
+  metadata_god: ^1.0.0
+    # path: Z:/The Phoenix Project/metadata_god/packages/metadata_god
 
 
   # FLUTTER Related
+  awesome_notifications: ^0.9.3+1
+  dart_des: ^1.0.2
   device_info: ^2.0.3
+  flutter_displaymode: ^0.6.0
   # flutter_isolate: ^2.0.1-pre
-  image_picker: ^0.8.5+3
-  path_provider: ^2.0.11
-  permission_handler: ^10.0.0
-  provider: ^6.0.3
-  share_plus: ^4.0.10+1
-  flutter_displaymode: ^0.4.0
+  image_picker: ^1.1.2
+  path_provider: ^2.1.4
+  permission_handler: ^11.3.1
+  provider: ^6.1.2
+  screenshot: ^3.0.0
+  share_plus: ^8.0.3
+  image: ^4.2.0
+  elastic_widgets:
+    git: https://github.com/shaan-mephobic/elastic-widgets.git
+  # spotify_metadata: ^1.0.0
+  mime: ^1.0.5
+  media_store_plus: 
+    path: C:/The Phoenix Project/fork/media_store_plus
+  # media_store_plus:
+  #   git:
+  #     url: https://github.com/KyleKun/media_store_plus.git
+  #     ref: main
+
 
 
   # DATABASE Related
@@ -61,24 +81,19 @@ dependencies:
 
 
   # ICONS Related
-  cupertino_icons: ^1.0.5
-  flutter_launcher_icons: ^0.10.0
+  cupertino_icons: ^1.0.6
+  flutter_launcher_icons: ^0.14.1
   flutter_remixicon:
     git: https://github.com/KarimAbdo/flutter_remixicon.git
   ionicons: ^0.2.1
-  material_design_icons_flutter: ^5.0.6996
+  material_design_icons_flutter: ^7.0.7296
 
 
   # WEB Related
-  http: ^0.13.5
+  http: ^1.2.2
   html: ^0.15.0
   html_unescape: ^2.0.0
-  url_launcher: ^6.1.5
-
-
-  # MISCELLANEOUS
-  awesome_notifications: ^0.6.21
-  screenshot: ^1.2.3
+  url_launcher: ^6.3.1
 
 
 dev_dependencies:
@@ -90,7 +105,9 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
+  # smooth_dev: 
+  #   path: Z:/Not-Mine/flutter_smooth/packages/smooth_dev
 
 
 # For information on the generic Dart part of this file, see the

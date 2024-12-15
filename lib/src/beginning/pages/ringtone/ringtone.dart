@@ -1,6 +1,10 @@
 import 'dart:ui';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:another_xlider/another_xlider.dart';
+import 'package:another_xlider/models/slider_step.dart';
+import 'package:another_xlider/models/tooltip/tooltip.dart';
+import 'package:another_xlider/models/tooltip/tooltip_box.dart';
+import 'package:another_xlider/models/trackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -20,13 +24,12 @@ class Ringtone extends StatefulWidget {
   final String filePath;
 
   const Ringtone(
-      {Key? key,
+      {super.key,
       required this.artworkId,
       required this.filePath,
       required this.artist,
       required this.title,
-      required this.songDuration})
-      : super(key: key);
+      required this.songDuration});
   @override
   State<Ringtone> createState() => _RingtoneState();
 }
@@ -127,6 +130,8 @@ class _RingtoneState extends State<Ringtone> with TickerProviderStateMixin {
         },
       ),
       appBar: AppBar(
+        elevation: 0,
+        //TODO make all elevations as 0. many pages are broken
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),

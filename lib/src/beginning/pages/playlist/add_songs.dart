@@ -17,8 +17,7 @@ List playListSongsId = [];
 class AddSongs extends StatefulWidget {
   final bool modify;
   final String? playlistName;
-  const AddSongs({required this.modify, required this.playlistName, Key? key})
-      : super(key: key);
+  const AddSongs({required this.modify, required this.playlistName, super.key});
   @override
   State<AddSongs> createState() => _AddSongsState();
 }
@@ -168,7 +167,7 @@ class _AddSongsState extends State<AddSongs> {
                                     color: Colors.grey[350],
                                   ),
                                   hintText: widget.playlistName,
-                                  prefixIcon: const Icon(
+                                  prefixIcon: Icon(
                                       MdiIcons.playlistMusicOutline,
                                       color: Colors.white),
                                   suffixIcon: Visibility(

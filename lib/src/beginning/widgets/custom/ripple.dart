@@ -61,14 +61,14 @@ class CustomRipple extends InteractiveInkFeature {
   /// When the splash is removed, `onRemoved` will be called.
   CustomRipple({
     required MaterialInkController controller,
-    required RenderBox referenceBox,
+    required super.referenceBox,
     Offset? position,
     required Color color,
     bool containedInkWell = false,
     RectCallback? rectCallback,
     BorderRadius? borderRadius,
     double? radius,
-    VoidCallback? onRemoved,
+    super.onRemoved,
   })  : _position = position,
         _borderRadius = borderRadius ?? BorderRadius.zero,
         _targetRadius = radius ??
@@ -79,9 +79,7 @@ class CustomRipple extends InteractiveInkFeature {
         _repositionToReferenceBox = !containedInkWell,
         super(
             controller: controller,
-            referenceBox: referenceBox,
-            color: color,
-            onRemoved: onRemoved) {
+            color: color) {
     _radiusController =  AnimationController(
         duration: _kUnconfirmedSplashDuration, vsync: controller.vsync)
       ..addListener(controller.markNeedsPaint)

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Interface extends StatefulWidget {
-  const Interface({Key? key}) : super(key: key);
+  const Interface({super.key});
 
   @override
   State<Interface> createState() => _InterfaceState();
@@ -374,8 +373,8 @@ class _InterfaceState extends State<Interface> {
                               ),
                             ),
                             trailing: DropdownButton<String>(
-                              value:
-                                  musicBox.get("miniPlayerProgress") ?? "Top",
+                              value: musicBox.get("miniPlayerPosition") ??
+                                  "Bottom",
                               icon: const Icon(Icons.arrow_drop_down_rounded,
                                   color: Colors.white70),
                               elevation: 25,
@@ -389,11 +388,11 @@ class _InterfaceState extends State<Interface> {
                               style: const TextStyle(color: Colors.white),
                               onChanged: (String? newValue) async {
                                 await musicBox.put(
-                                    "miniPlayerProgress", newValue);
+                                    "miniPlayerPosition", newValue);
                                 setState(() {});
                               },
                               items: <String>[
-                                'Top',
+                                // 'Top',
                                 'Bottom',
                                 'Hidden',
                               ].map<DropdownMenuItem<String>>((String value) {

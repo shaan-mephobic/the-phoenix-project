@@ -77,7 +77,7 @@ gettinAlbumsArts() async {
     } else {
       albumsArts[allAlbums[i].album] = await OnAudioQuery().queryArtwork(
           allAlbums[i].id, ArtworkType.ALBUM,
-          format: ArtworkFormat.JPEG, size: 350);
+          format: ArtworkFormat.JPEG, size: 375);
       if (albumsArts[allAlbums[i].album] != null) {
         await File(
                 "${applicationFileDirectory.path}/artworks/${allAlbums[i].album.replaceAll(RegExp(r'[^\w\s]+'), '')}.jpeg")
@@ -181,7 +181,7 @@ gettinSongArts() async {
     if (cachedIds.isEmpty) {
       for (int i = 0; i < allSongIds.length; i++) {
         Uint8List? artwork = await OnAudioQuery()
-            .queryArtwork(allSongIds[i], ArtworkType.AUDIO, size: 350);
+            .queryArtwork(allSongIds[i], ArtworkType.AUDIO, size: 375);
         if (artwork == null) {
           artworksPointer[allSongIds[i]] = null;
           allArtworks.add(null);
@@ -224,7 +224,7 @@ gettinSongArts() async {
       for (int i = 0; i < newIds.length; i++) {
         refresh = true;
         Uint8List? artwork = await OnAudioQuery()
-            .queryArtwork(newIds[i], ArtworkType.AUDIO, size: 350);
+            .queryArtwork(newIds[i], ArtworkType.AUDIO, size: 375);
         if (artwork == null) {
           artworksPointer[newIds[i]] = null;
           allArtworks.add(null);
@@ -265,7 +265,7 @@ gettinSongArts() async {
       }
     }
   }
-  allSongIds = musicBox.get("artworksName");
+  allSongIds = musicBox.get("artworksName") ?? [];
 }
 
 /* 

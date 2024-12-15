@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class NowPlaying extends StatefulWidget {
-  const NowPlaying({Key? key}) : super(key: key);
+  const NowPlaying({super.key});
 
   @override
   State<NowPlaying> createState() => _NowPlayingState();

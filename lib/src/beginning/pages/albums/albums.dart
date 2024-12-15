@@ -12,7 +12,7 @@ int? passedIndexAlbum;
 String? selectedAlbumName;
 
 class Albums extends StatefulWidget {
-  const Albums({Key? key}) : super(key: key);
+  const Albums({super.key});
 
   @override
   State<Albums> createState() => _AlbumsState();
@@ -92,6 +92,27 @@ class _AlbumsState extends State<Albums> with AutomaticKeepAliveClientMixin {
                     var rootStateDup = rootState;
                     await Navigator.push(
                       context,
+                      // PageRouteBuilder(
+                      //   pageBuilder: (c, a1, a2) => MultiProvider(
+                      //     providers: [
+                      //       ChangeNotifierProvider<Leprovider>(
+                      //           create: (_) => Leprovider()),
+                      //       ChangeNotifierProvider<MrMan>(
+                      //         create: (_) => MrMan(),
+                      //       ),
+                      //       ChangeNotifierProvider<Seek>(create: (_) => Seek()),
+                      //       ChangeNotifierProvider<SortProvider>(
+                      //         create: (_) => SortProvider(),
+                      //         builder: (context, child) => const AlbumsInside(),
+                      //       ),
+                      //     ],
+                      //   ),
+                      //   transitionsBuilder: (c, anim, a2, child) =>
+                      //       FadeTransition(opacity: anim, child: child),
+                      //   transitionDuration: const Duration(milliseconds: 200),
+                      //   reverseTransitionDuration:
+                      //       const Duration(milliseconds: 200),
+                      // ),
                       MaterialPageRoute(
                         builder: (context) => MultiProvider(
                           providers: [
@@ -119,27 +140,24 @@ class _AlbumsState extends State<Albums> with AutomaticKeepAliveClientMixin {
                   child: Column(
                     children: [
                       const Padding(padding: EdgeInsets.only(top: 5)),
-                      Hero(
-                        tag: "sterio-$index",
-                        child: PhysicalModel(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(kRounded),
-                          elevation: deviceWidth! / 140,
-                          child: Container(
-                            width: orientedCar
-                                ? deviceHeight! / 4 - 17
-                                : deviceWidth! / 3 - 17,
-                            height: orientedCar
-                                ? deviceHeight! / 4 - 17
-                                : deviceWidth! / 3 - 17,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(kRounded),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: MemoryImage(
-                                  albumsArts[allAlbums[index].album] ??
-                                      defaultNone!,
-                                ),
+                      PhysicalModel(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(kRounded),
+                        elevation: deviceWidth! / 140,
+                        child: Container(
+                          width: orientedCar
+                              ? deviceHeight! / 4 - 17
+                              : deviceWidth! / 3 - 17,
+                          height: orientedCar
+                              ? deviceHeight! / 4 - 17
+                              : deviceWidth! / 3 - 17,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(kRounded),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: MemoryImage(
+                                albumsArts[allAlbums[index].album] ??
+                                    defaultNone!,
                               ),
                             ),
                           ),

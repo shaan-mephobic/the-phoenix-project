@@ -11,7 +11,7 @@ import '../../../utilities/page_backend/file_exporer.dart';
 Map folderData = {};
 
 class Miscellaneous extends StatefulWidget {
-  const Miscellaneous({Key? key}) : super(key: key);
+  const Miscellaneous({super.key});
 
   @override
   State<Miscellaneous> createState() => _MiscellaneousState();

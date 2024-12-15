@@ -6,7 +6,7 @@ import 'package:phoenix/src/beginning/widgets/artwork_background.dart';
 import 'package:provider/provider.dart';
 
 class Changelogs extends StatefulWidget {
-  const Changelogs({Key? key}) : super(key: key);
+  const Changelogs({super.key});
   @override
   State<Changelogs> createState() => _ChangelogsState();
 }

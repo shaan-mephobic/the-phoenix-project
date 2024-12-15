@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/dialogues/on_hold.dart';
 
 class Allofem extends StatefulWidget {
-  const Allofem({Key? key}) : super(key: key);
+  const Allofem({super.key});
 
   @override
   State<Allofem> createState() => _AllofemState();
@@ -119,7 +119,7 @@ class _AllofemState extends State<Allofem>
                 subtitle: Opacity(
                   opacity: 0.5,
                   child: Text(
-                    songList[index - 1].artist!,
+                    songList[index - 1].artist ?? "<unknown>",
                     maxLines: 1,
                     style: const TextStyle(
                       color: Colors.white70,

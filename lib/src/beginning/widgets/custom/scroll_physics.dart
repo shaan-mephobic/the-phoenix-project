@@ -4,8 +4,7 @@ import 'dart:math' as math;
 
 class FasterBouncingScrollPhysics extends ScrollPhysics {
   /// Creates scroll physics that bounce back from the edge.
-  const FasterBouncingScrollPhysics({ScrollPhysics? parent})
-      : super(parent: parent);
+  const FasterBouncingScrollPhysics({super.parent});
 
   @override
   FasterBouncingScrollPhysics applyTo(ScrollPhysics? ancestor) {

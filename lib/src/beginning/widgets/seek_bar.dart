@@ -10,7 +10,7 @@ import '../pages/ringtone/ringtone.dart';
 bool seekInitiated = false;
 
 class SeekBar extends StatefulWidget {
-  const SeekBar({Key? key}) : super(key: key);
+  const SeekBar({super.key});
 
   @override
   State<SeekBar> createState() => _SeekBarState();
@@ -183,7 +183,7 @@ class _SeekBarState extends State<SeekBar> {
 }
 
 class CyberSkySeekBar extends StatefulWidget {
-  const CyberSkySeekBar({Key? key}) : super(key: key);
+  const CyberSkySeekBar({super.key});
 
   @override
   State<CyberSkySeekBar> createState() => _CyberSkySeekBarState();
@@ -360,7 +360,7 @@ class _CyberSkySeekBarState extends State<CyberSkySeekBar> {
 
 class RingtoneSeekBar extends StatefulWidget {
   final Duration duration;
-  const RingtoneSeekBar({Key? key, required this.duration}) : super(key: key);
+  const RingtoneSeekBar({super.key, required this.duration});
 
   @override
   State<RingtoneSeekBar> createState() => _RingtoneSeekBarState();
@@ -518,7 +518,7 @@ class _RingtoneSeekBarState extends State<RingtoneSeekBar> {
 }
 
 class MiniSeekbar extends StatefulWidget {
-  const MiniSeekbar({Key? key}) : super(key: key);
+  const MiniSeekbar({super.key});
 
   @override
   State<MiniSeekbar> createState() => _MiniSeekbarState();

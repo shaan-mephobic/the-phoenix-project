@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_edit/on_audio_edit.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:phoenix/src/beginning/utilities/audio_handlers/background.dart';
@@ -42,7 +43,7 @@ MediaItem nowMediaItem = const MediaItem(
 List<MediaItem> nowQueue = [];
 late int indexOfList;
 late AudioPlayerTask audioHandler;
-late bool isAndroid11;
+late int androidSdkVersion;
 bool backArtStateChange = true;
 PanelController pc = PanelController();
 late Directory applicationFileDirectory;
@@ -68,3 +69,4 @@ BorderRadius radiusFullscreen = BorderRadius.only(
   topLeft: Radius.circular(deviceWidth! / 40),
   topRight: Radius.circular(deviceWidth! / 40),
 );
+final equalizer = AndroidEqualizer();

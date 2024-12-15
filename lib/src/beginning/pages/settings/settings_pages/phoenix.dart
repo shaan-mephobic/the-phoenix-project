@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Phoenix extends StatefulWidget {
-  const Phoenix({Key? key}) : super(key: key);
+  const Phoenix({super.key});
 
   @override
   State<Phoenix> createState() => _PhoenixState();
@@ -216,7 +216,7 @@ class _PhoenixState extends State<Phoenix> {
                                             iconSize: orientedCar
                                                 ? deviceWidth! / 17
                                                 : deviceWidth! / 17,
-                                            icon: const Icon(MdiIcons.gmail,
+                                            icon: Icon(MdiIcons.gmail,
                                                 color: Colors.white),
                                             onPressed: () {
                                               final Uri emailLaunchUri = Uri(
@@ -230,7 +230,7 @@ class _PhoenixState extends State<Phoenix> {
                                             iconSize: orientedCar
                                                 ? deviceWidth! / 17
                                                 : deviceWidth! / 17,
-                                            icon: const Icon(MdiIcons.github,
+                                            icon: Icon(MdiIcons.github,
                                                 color: Colors.white),
                                             onPressed: () async {
                                               Uri url = Uri.parse(

@@ -6,7 +6,7 @@ import "dart:collection";
 import 'package:phoenix/src/beginning/utilities/global_variables.dart';
 
 class LicensesPage extends StatefulWidget {
-  const LicensesPage({Key? key}) : super(key: key);
+  const LicensesPage({super.key});
 
   @override
   State<LicensesPage> createState() => _LicensesPageState();
@@ -104,8 +104,7 @@ class _LicensesPageState extends State<LicensesPage> {
 class InsideLicense extends StatelessWidget {
   final List<String>? licenseValue;
   final String? licenseKey;
-  const InsideLicense(this.licenseKey, this.licenseValue, {Key? key})
-      : super(key: key);
+  const InsideLicense(this.licenseKey, this.licenseValue, {super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
